@@ -6,9 +6,7 @@
 template <typename F, typename D, typename S>
 Mesh<F> extract(S source, const Block<F>& block, const D& threshold, TransitionSides transition_sides) {
     Extractor<F, D, S> extractor(source, block, threshold, transition_sides);
-    // return extractor.extract();
-
-    return Mesh<F>{};
+    return extractor.extract();
 }
 
 // template<typename D, typename FIELD>
@@ -22,18 +20,14 @@ Mesh<F> extract_from_field(
     using WS = WorldMappingVoxelSource<C, D, SF>;
 
     WS source{ field, &block };
-    // return Extractor<F, S, D>::new_instance(&source, block, threshold, transition_sides).extract();
-
-    return Mesh<F>{};
+    return Extractor<F, S, D>(&source, block, threshold, transition_sides).extract();
 }
 
-template <typename F, typename C, typename D, typename FUN>
+template <typename F, typename S, typename C, typename D, typename FUN>
 auto extract_from_fn(FUN f, const Block<F>& block, D threshold, TransitionSides transition_sides) -> Mesh<F>
 {
     auto field = ScalarFieldForFn<F, FUN>(f);
     auto source = WorldMappingVoxelSource<C, D, decltype(field)>{field, &block};
 
-    // return Extractor<F, decltype(source), D>::new_extractor(&source, &block, threshold, transition_sides).extract();
-
-    return Mesh<F>{};
+    return Extractor<F, S, D>(&source, &block, threshold, transition_sides).extract();
 }

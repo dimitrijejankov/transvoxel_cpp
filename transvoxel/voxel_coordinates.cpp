@@ -1,5 +1,6 @@
 #include "voxel_coordinates.hpp"
 #include "implementation/rotation.hpp"
+#include <cassert>
 
 template <typename F>
 inline Position<F> to_position_in_block(
@@ -30,4 +31,13 @@ inline RegularVoxelIndex to_higher_res_neighbour_block_index(
         + (2 * cell.cell_u + delta.u) * rot.u.z
         + (2 * cell.cell_v + delta.v) * rot.v.z;
     return RegularVoxelIndex { x, y, z };
+}
+
+RegularVoxelIndex as_regular_index(const HighResolutionVoxelIndex& voxelIndex, const Rotation& rotation, size_t block_subdivisions) {
+    assert(rotation.side == voxelIndex.cell.side);
+    size_t cell_u = voxelIndex.delta.u / 2;
+    size_t cell_v = voxelIndex.delta.v / 2;
+    RegularVoxelIndex regular_index =
+        rotation.to_regular_voxel_index(block_subdivisions, voxelIndex.cell, cell_u, cell_v);
+    return regular_index;
 }

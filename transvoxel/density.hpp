@@ -4,51 +4,36 @@
 #include <cmath>
 #include <limits>
 
-template <typename T>
+template <typename F>
 struct Density {
-    static std::array<float, 3> to_normal(const T& a, const T& b, const T& c) {
-        const float norm = std::sqrt(a * a + b * b + c * c);
-        if (norm > std::numeric_limits<T>::epsilon()) {
+
+    static bool inside(F value) {
+        return value > 0.0f;
+    }
+
+    static std::array<float, 3> to_normal(const F& a, const F& b, const F& c) {
+        const auto norm = std::sqrt(a * a + b * b + c * c);
+        if (norm > std::numeric_limits<F>::epsilon()) {
             return {-a / norm, -b / norm, -c / norm};
         } else {
             return {0.0f, 0.0f, 0.0f};
         }
     }
 
-    static T interp(const T& a, const T& b, const T& threshold) {
-        if (std::abs(b - a) > std::numeric_limits<T>::epsilon()) {
-            return (threshold - a) / (b - a);
-        } else {
-            return static_cast<T>(0.5f);
-        }
-    }
-
-    static float as_f32(const T& value) {
-        return static_cast<float>(value);
-    }
-};
-
-template <>
-struct Density<float> {
-    static std::array<float, 3> to_normal(const float& a, const float& b, const float& c) {
-        const float norm = std::sqrt(a * a + b * b + c * c);
-        if (norm > std::numeric_limits<float>::epsilon()) {
-            return {-a / norm, -b / norm, -c / norm};
-        } else {
-            return {0.0f, 0.0f, 0.0f};
-        }
-    }
-
-    static float interp(const float& a, const float& b, const float& threshold) {
-        if (std::abs(b - a) > std::numeric_limits<float>::epsilon()) {
+    static float interp(const F& a, const F& b, const F& threshold) {
+        if (std::abs(b - a) > std::numeric_limits<F>::epsilon()) {
             return (threshold - a) / (b - a);
         } else {
             return 0.5f;
         }
     }
 
-    static float as_f32(const float& value) {
-        return value;
+    static F diff(F value, F other) {
+        return value - other;
+    }
+
+    static constexpr float shrink_factor() {
+        return 0.15f;
     }
 };
 

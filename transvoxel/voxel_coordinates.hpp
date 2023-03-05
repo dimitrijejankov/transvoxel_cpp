@@ -94,6 +94,8 @@ inline bool on_regular_grid(const HighResolutionVoxelIndex& self) {
     return du_on_regular_grid && dv_on_regular_grid && dw_on_regular_grid;
 }
 
+RegularVoxelIndex as_regular_index(const HighResolutionVoxelIndex& voxelIndex, const Rotation& rotation, size_t block_subdivisions);
+
 inline Position<float> to_position_in_block(const Block<float>& block, const HighResolutionVoxelIndex& self);
 
 inline RegularVoxelIndex to_higher_res_neighbour_block_index(

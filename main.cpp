@@ -2,9 +2,7 @@
 #include <iostream>
 #include "transvoxel/density.hpp"
 #include "transvoxel/extraction.hpp"
-// #include <transvoxel/scalar_field.hpp>
 #include "transvoxel/structs.hpp"
-// #include <transvoxel/transition_sides.hpp>
 #include "transvoxel/voxel_source.hpp"
 
 float sphere_density(float x, float y, float z) {
@@ -32,7 +30,7 @@ int main() {
 
     // // Extract from a ScalarField
     // Sphere field;
-    // mesh = transvoxel::extract(field, block, THRESHOLD, transvoxel::TransitionSide::LowX);
+    // mesh = extract(field, block, THRESHOLD, into(TransitionSide::LowX));
     // std::cout << "Extracted mesh: " << mesh << std::endl;
 
     // // Extract from a simple field function

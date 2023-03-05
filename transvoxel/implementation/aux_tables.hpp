@@ -9,15 +9,15 @@ struct RegularCellVoxelIndex {
     RegularCellVoxelIndex(int i) : index(i) {}
 };
 
-const RegularVoxelDelta REGULAR_CELL_VOXELS[] = {
-    { 0, 0, 0 }, // Voxel 0 is the cell "origin" [with the lowest x, y, and z]
-    { 1, 0, 0 }, // Voxel 1 == 1 toward X
-    { 0, 1, 0 }, // Voxel 2 == 1 toward Y
-    { 1, 1, 0 },
-    { 0, 0, 1 },
-    { 1, 0, 1 },
-    { 0, 1, 1 },
-    { 1, 1, 1 }
+const std::array<RegularVoxelDelta, 8> REGULAR_CELL_VOXELS = {
+    RegularVoxelDelta{ 0, 0, 0 }, // Voxel 0 is the cell "origin" [with the lowest x, y, and z]
+    RegularVoxelDelta{ 1, 0, 0 }, // Voxel 1 == 1 toward X
+    RegularVoxelDelta{ 0, 1, 0 }, // Voxel 2 == 1 toward Y
+    RegularVoxelDelta{ 1, 1, 0 },
+    RegularVoxelDelta{ 0, 0, 1 },
+    RegularVoxelDelta{ 1, 0, 1 },
+    RegularVoxelDelta{ 0, 1, 1 },
+    RegularVoxelDelta{ 1, 1, 1 }
 };
 
 inline RegularVoxelDelta get_regular_voxel_delta(const RegularCellVoxelIndex& index) {
