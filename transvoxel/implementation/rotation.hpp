@@ -71,6 +71,8 @@ struct Rotation {
 
     static const Rotation& for_side(TransitionSide side);
 
+    static const Rotation& create_default();
+
     Rotation(
         TransitionSide side,
         std::tuple<uint64_t , uint64_t , uint64_t > uvw_base,
