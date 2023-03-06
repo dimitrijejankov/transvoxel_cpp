@@ -1,6 +1,5 @@
 #pragma once
 
-#include "density_caching.hpp"
 #include "rotation.hpp"
 #include "transvoxel.h"
 #include "aux_tables.hpp"
@@ -99,7 +98,7 @@ void _shrink_if_needed(F &x, F &y, F &z,
 
 template<typename F, typename D, typename S>
 struct Extractor {
-    PreCachingVoxelSource<D, S> density_source;
+    S density_source;
     Block<F> block;
     D threshold;
     TransitionSides transition_sides;
@@ -112,7 +111,7 @@ struct Extractor {
 
 
     Extractor(S density_source, const Block<F> &block, D threshold, TransitionSides transition_sides)
-        : density_source(PreCachingVoxelSource<D, S>(density_source, block.subdivisions)),
+        : density_source(density_source),
         block(block),
         threshold(threshold),
         transition_sides(transition_sides),
@@ -151,12 +150,6 @@ struct Extractor {
     void extract_regular_cell(const RegularCellIndex& cell_index) {
         const uint8_t case_number = regular_cell_case(cell_index);
         const uint8_t cell_class = regularCellClass[case_number];
-        if (cell_class != 0) {
-            // To optimize, we could also check if the cell is on a border of the block, here
-            // we only need voxels out of the block when such a cell generates vertices, because
-            // these are for vertex normals
-            density_source.load_regular_extended_voxels();
-        }
         const RegularCellData& triangulation_info = regularCellData[cell_class];
         const auto& vertices_data = regularVertexData[case_number];
         std::array<size_t, 12> cell_vertices_indices {};
@@ -192,7 +185,7 @@ struct Extractor {
     }
     
     void extract_transition_cells() {
-        density_source.load_transition_voxels(transition_sides);
+        
         
         for (auto side = 0; side < transition_sides.size(); ++side) {
             if(!transition_sides.test(side)) {
