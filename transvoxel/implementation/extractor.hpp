@@ -249,15 +249,24 @@ struct Extractor {
     }
 
     D regular_voxel_density(const RegularVoxelIndex& voxel_index) {
-        return density_source.get_density(voxel_index);
+        return density_source(voxel_index.x, voxel_index.y, voxel_index.z);
+    }
+
+    D get_transition_density(const HighResolutionVoxelIndex& index) const {
+        auto rotation = Rotation::for_side(index.cell.side);
+        auto position_in_block = rotation.to_position_in_block<F>(block.subdivisions, index);
+        auto x = block.dims.base[0] + block.dims.size * position_in_block.x;
+        auto y = block.dims.base[1] + block.dims.size * position_in_block.y;
+        auto z = block.dims.base[2] + block.dims.size * position_in_block.z;
+        return density_source(x, y, z);
     }
 
     D transition_grid_point_density(const HighResolutionVoxelIndex& voxel_index) {
         if (on_regular_grid(voxel_index)) {
             const RegularVoxelIndex regular_index = as_regular_index(voxel_index, current_rotation, block.subdivisions);
-            return density_source.get_density(regular_index);
+            return density_source(regular_index.x, regular_index.y, regular_index.z);
         } else {
-            return density_source.get_transition_density(voxel_index);
+            return get_transition_density(voxel_index);
         }
     }
 

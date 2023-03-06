@@ -38,31 +38,6 @@ struct Density {
     }
 };
 
-template <typename D, typename F>
-struct ScalarField {
-    /**
-    Obtain the density at the given point in space
-    */
-    virtual D get_density(F x, F y, F z) const = 0;
-    virtual ~ScalarField() = default;
-};
-
-template <typename D, typename F>
-struct ScalarFieldForFn : public ScalarField<D, F> {
-    ScalarFieldForFn(D (*func)(F, F, F)) : m_function(func) {}
-
-    D get_density(float x, float y, float z) const override {
-        return m_function(x, y, z);
-    }
-
-    std::function<D(F, F, F)> m_function;
-};
-
-template <typename D, typename F>
-ScalarFieldForFn<D, F> make_scalar_field(F&& f) {
-    return ScalarFieldForFn<D, F>(std::forward<F>(f));
-}
-
 template <typename C>
 struct Coordinate {
 
