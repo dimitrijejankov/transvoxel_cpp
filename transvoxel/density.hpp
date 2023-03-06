@@ -3,6 +3,7 @@
 #include <array>
 #include <cmath>
 #include <limits>
+#include <functional>
 
 template <typename F>
 struct Density {
@@ -48,13 +49,13 @@ struct ScalarField {
 
 template <typename D, typename F>
 struct ScalarFieldForFn : public ScalarField<D, F> {
-    ScalarFieldForFn(F&& f) : m_function(std::forward<F>(f)) {}
+    ScalarFieldForFn(D (*func)(F, F, F)) : m_function(func) {}
 
-    D get_density(float x, float y, float z) override {
+    D get_density(float x, float y, float z) const override {
         return m_function(x, y, z);
     }
 
-    F m_function;
+    std::function<D(F, F, F)> m_function;
 };
 
 template <typename D, typename F>

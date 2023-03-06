@@ -28,22 +28,22 @@ int main() {
     auto mesh = extract(source, block, THRESHOLD, into(TransitionSide::LowX));
     std::cout << "Extracted mesh: " << mesh << std::endl;
 
-    // // Extract from a ScalarField
-    // Sphere field;
-    // mesh = extract(field, block, THRESHOLD, into(TransitionSide::LowX));
-    // std::cout << "Extracted mesh: " << mesh << std::endl;
+    // Extract from a ScalarField
+    Sphere field;
+    mesh = extract_from_field(field, block, THRESHOLD, into(TransitionSide::LowX));
+    std::cout << "Extracted mesh: " << mesh << std::endl;
 
-    // // Extract from a simple field function
-    // transvoxel::ScalarFieldForFn<float, float> field(sphere_density);
-    // mesh = transvoxel::extract(field, block, THRESHOLD, transvoxel::TransitionSide::LowX);
-    // std::cout << "Extracted mesh: " << mesh << std::endl;
+    // Extract from a simple field function
+    ScalarFieldForFn<float, float> field_fn(sphere_density);
+    mesh = extract_from_field(field_fn, block, THRESHOLD, into(TransitionSide::LowX));
+    std::cout << "Extracted mesh: " << mesh << std::endl;
 
-    // // Extract from a simple field closure
-    // transvoxel::ScalarFieldForFn<float, float> closure([](float x, float y, float z) {
-    //     return 1.0f - std::sqrt(x * x + y * y + z * z) / 5.0f;
-    // });
-    // mesh = transvoxel::extract(closure, block, THRESHOLD, transvoxel::TransitionSide::LowX);
-    // std::cout << "Extracted mesh: " << mesh << std::endl;
+    // Extract from a simple field closure
+    ScalarFieldForFn<float, float> closure([](float x, float y, float z) {
+        return 1.0f - std::sqrt(x * x + y * y + z * z) / 5.0f;
+    });
+    mesh = extract_from_field(closure, block, THRESHOLD, into(TransitionSide::LowX));
+    std::cout << "Extracted mesh: " << mesh << std::endl;
 
     return 0;
 }
