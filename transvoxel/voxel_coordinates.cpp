@@ -18,18 +18,18 @@ inline RegularVoxelIndex to_higher_res_neighbour_block_index(
     auto cell = self.cell;
     auto delta = self.delta;
     auto rot = Rotation::for_side(cell.side);
-    auto x = higher_res_block_size * (rot.uvw_base.x + rot.w.x)
+    auto x = static_cast<int64_t>(higher_res_block_size) * (rot.uvw_base.x + rot.w.x)
         + delta.w * rot.w.x
-        + (2 * cell.cell_u + delta.u) * rot.u.x
-        + (2 * cell.cell_v + delta.v) * rot.v.x;
-    auto y = higher_res_block_size * (rot.uvw_base.y + rot.w.y)
+        + (2 * static_cast<int64_t>(cell.cell_u) + delta.u) * rot.u.x
+        + (2 * static_cast<int64_t>(cell.cell_v) + delta.v) * rot.v.x;
+    auto y = static_cast<int64_t>(higher_res_block_size) * (rot.uvw_base.y + rot.w.y)
         + delta.w * rot.w.y
-        + (2 * cell.cell_u + delta.u) * rot.u.y
-        + (2 * cell.cell_v + delta.v) * rot.v.y;
-    auto z = higher_res_block_size * (rot.uvw_base.z + rot.w.z)
+        + (2 * static_cast<int64_t>(cell.cell_u) + delta.u) * rot.u.y
+        + (2 * static_cast<int64_t>(cell.cell_v) + delta.v) * rot.v.y;
+    auto z = static_cast<int64_t>(higher_res_block_size) * (rot.uvw_base.z + rot.w.z)
         + delta.w * rot.w.z
-        + (2 * cell.cell_u + delta.u) * rot.u.z
-        + (2 * cell.cell_v + delta.v) * rot.v.z;
+        + (2 * static_cast<int64_t>(cell.cell_u) + delta.u) * rot.u.z
+        + (2 * static_cast<int64_t>(cell.cell_v) + delta.v) * rot.v.z;
     return RegularVoxelIndex { x, y, z };
 }
 

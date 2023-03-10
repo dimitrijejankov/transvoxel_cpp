@@ -1,5 +1,6 @@
 #include <cassert>
 #include <cstddef>
+#include <cstdint>
 #include <vector>
 #include <unordered_map>
 #include "../voxel_coordinates.hpp"
@@ -42,12 +43,12 @@ struct PreCachingVoxelSource {
         }
     }
 
-    size_t regular_block_index(size_t x, size_t y, size_t z) const {
+    size_t regular_block_index(int64_t x, int64_t y, int64_t z) const {
         const size_t subs = block_subdivisions;
         return (subs + 1) * (subs + 1) * x + (subs + 1) * y + z;
     }
 
-    D from_source(size_t x, size_t y, size_t z) {
+    D from_source(int64_t x, int64_t y, int64_t z) {
         return inner_source.get_density(RegularVoxelIndex{ x, y, z });
     }
 
@@ -159,8 +160,8 @@ struct PreCachingVoxelSource {
         const size_t subs = block_subdivisions;
         const size_t size_per_face = (2 * subs + 1) * (2 * subs + 1);
         const size_t slice_shift = cache_slice * size_per_face;
-        const size_t global_du = 2 * voxel_index.cell.cell_u + voxel_index.delta.u;
-        const size_t global_dv = 2 * voxel_index.cell.cell_v + voxel_index.delta.v;
+        const int64_t global_du = 2 * static_cast<int64_t>(voxel_index.cell.cell_u) + voxel_index.delta.u;
+        const int64_t global_dv = 2 * static_cast<int64_t>(voxel_index.cell.cell_v) + voxel_index.delta.v;
         const size_t index_in_slice = (2 * subs + 1) * static_cast<size_t>(global_du) +
         static_cast<size_t>(global_dv);
         return slice_shift + index_in_slice;
@@ -216,8 +217,8 @@ struct PreCachingVoxelSource {
         if (d.w != 0) {
             assert(d.u % 2 != 0 || d.v % 2 != 0);
         }
-        if (d.w != 0 || c.cell_u * 2 + d.u < 0 || c.cell_u * 2 + d.u > 2 * subs ||
-            c.cell_v * 2 + d.v < 0 || c.cell_v * 2 + d.v > 2 * subs) {
+        if (d.w != 0 || static_cast<int64_t>(c.cell_u) * 2 + d.u < 0 || static_cast<int64_t>(c.cell_u) * 2 + d.u > 2 * subs ||
+            static_cast<int64_t>(c.cell_v) * 2 + d.v < 0 || static_cast<int64_t>(c.cell_v) * 2 + d.v > 2 * subs) {
             // Out of the block face: we don't cache these
             return inner_source.get_transition_density(index);
         }

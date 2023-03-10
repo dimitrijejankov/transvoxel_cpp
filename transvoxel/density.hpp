@@ -2,6 +2,7 @@
 
 #include <array>
 #include <cmath>
+#include <cstdint>
 #include <limits>
 #include <functional>
 
@@ -66,11 +67,11 @@ ScalarFieldForFn<D, F> make_scalar_field(F&& f) {
 template <typename C>
 struct Coordinate {
 
-    static C from_ratio(int a, unsigned int b) {
+    static C from_ratio(int64_t a, uint64_t b) {
         return static_cast<C>(a) / static_cast<C>(b);
     }
 
-    static C half(int a) {
+    static C half(int64_t a) {
         return 0.5f * static_cast<C>(a);
     }
 };

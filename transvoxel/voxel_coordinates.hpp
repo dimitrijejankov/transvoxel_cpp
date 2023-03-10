@@ -18,22 +18,22 @@ struct RegularCellIndex {
 };
 
 struct RegularVoxelDelta {
-    uint64_t  x;
-    uint64_t  y;
-    uint64_t  z;
+    int64_t  x;
+    int64_t  y;
+    int64_t  z;
 };
 
 struct RegularVoxelIndex {
-    uint64_t  x;
-    uint64_t  y;
-    uint64_t  z;
+    int64_t  x;
+    int64_t  y;
+    int64_t  z;
 };
 
 inline RegularVoxelIndex operator+(const RegularCellIndex& lhs, const RegularVoxelDelta& rhs) {
     return RegularVoxelIndex {
-        static_cast<uint64_t >(lhs.x) + rhs.x,
-        static_cast<uint64_t >(lhs.y) + rhs.y,
-        static_cast<uint64_t >(lhs.z) + rhs.z
+        static_cast<int64_t >(lhs.x) + rhs.x,
+        static_cast<int64_t >(lhs.y) + rhs.y,
+        static_cast<int64_t >(lhs.z) + rhs.z
     };
 }
 
@@ -60,17 +60,17 @@ struct HighResolutionVoxelDelta {
 
     HighResolutionVoxelDelta() = default;
 
-    HighResolutionVoxelDelta(const std::tuple<uint64_t , uint64_t , uint64_t > &uvw) :
+    HighResolutionVoxelDelta(const std::tuple<int64_t , int64_t , int64_t > &uvw) :
         u(std::get<0>(uvw)),
         v(std::get<1>(uvw)),
         w(std::get<2>(uvw)) {}
 
     /// U. From -1 to 3 (included). 0 to 2 are within the cell. -1 and 3 extend out, for gradient computations
-    uint64_t  u;
+    int64_t  u;
     /// V. From -1 to 3 (included). 0 to 2 are within the cell. -1 and 3 extend out, for gradient computations
-    uint64_t  v;
+    int64_t  v;
     /// W. From -1 to 1. 0 is on the face, 1 is within the cell, -1 is outside the cell
-    uint64_t  w;
+    int64_t  w;
 };
 
 struct HighResolutionVoxelIndex {
@@ -79,7 +79,7 @@ struct HighResolutionVoxelIndex {
 };
 
 inline HighResolutionVoxelIndex from_transition_side(
-    TransitionSide side, std::size_t cell_u, std::size_t cell_v, uint64_t  u, uint64_t  v, uint64_t  w)
+    TransitionSide side, std::size_t cell_u, std::size_t cell_v, int64_t  u, int64_t  v, int64_t  w)
 {
     return HighResolutionVoxelIndex {
         .cell = from_transition_side(side, cell_u, cell_v),

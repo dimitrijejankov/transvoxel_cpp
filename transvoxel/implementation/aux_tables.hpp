@@ -1,6 +1,7 @@
 #pragma once
 #include "rotation.hpp"
 #include <array>
+#include <cstdint>
 
 extern std::array<Rotation, 6> ROTATIONS;
 
@@ -52,7 +53,7 @@ struct TransitionCellGridPoint {
     }
 };
 
-inline TransitionCellGridPoint tcell_highres_face_gridpoint(size_t u, size_t v) {
+inline TransitionCellGridPoint tcell_highres_face_gridpoint(int64_t u, int64_t v) {
     return TransitionCellGridPoint(TransitionCellGridPointType::HighResFace, HighResolutionVoxelDelta({u, v, 0}));
 }
 

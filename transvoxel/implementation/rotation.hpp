@@ -11,14 +11,14 @@
 
 struct XYZ {
 
-    XYZ(std::tuple<uint64_t , uint64_t , uint64_t > xyz) :
+    XYZ(std::tuple<int64_t , int64_t , int64_t > xyz) :
         x(std::get<0>(xyz)),
         y(std::get<1>(xyz)),
         z(std::get<2>(xyz)) {}
 
-    uint64_t  x;
-    uint64_t  y;
-    uint64_t  z;
+    int64_t  x;
+    int64_t  y;
+    int64_t  z;
 };
 
 
@@ -35,17 +35,17 @@ struct Rotation {
         const auto delta = voxel_index.delta;
 
         // We multiply by 2 most things to divide in the end, in an attempt to reduce floating point operations (maybe need to measure if this is gaining us anything)
-        const auto x = uvw_base.x * 2 * static_cast<uint64_t >(block_size)
-            + u.x * (2 * static_cast<uint64_t >(cell_index.cell_u) + delta.u)
-            + v.x * (2 * static_cast<uint64_t >(cell_index.cell_v) + delta.v)
+        const auto x = uvw_base.x * 2 * static_cast<int64_t >(block_size)
+            + u.x * (2 * static_cast<int64_t >(cell_index.cell_u) + delta.u)
+            + v.x * (2 * static_cast<int64_t >(cell_index.cell_v) + delta.v)
             + w.x * delta.w;
-        const auto y = uvw_base.y * 2 * static_cast<uint64_t >(block_size)
-            + u.y * (2 * static_cast<uint64_t >(cell_index.cell_u) + delta.u)
-            + v.y * (2 * static_cast<uint64_t >(cell_index.cell_v) + delta.v)
+        const auto y = uvw_base.y * 2 * static_cast<int64_t >(block_size)
+            + u.y * (2 * static_cast<int64_t >(cell_index.cell_u) + delta.u)
+            + v.y * (2 * static_cast<int64_t >(cell_index.cell_v) + delta.v)
             + w.y * delta.w;
-        const auto z = uvw_base.z * 2 * static_cast<uint64_t >(block_size)
-            + u.z * (2 * static_cast<uint64_t >(cell_index.cell_u) + delta.u)
-            + v.z * (2 * static_cast<uint64_t >(cell_index.cell_v) + delta.v)
+        const auto z = uvw_base.z * 2 * static_cast<int64_t >(block_size)
+            + u.z * (2 * static_cast<int64_t >(cell_index.cell_u) + delta.u)
+            + v.z * (2 * static_cast<int64_t >(cell_index.cell_v) + delta.v)
             + w.z * delta.w;
 
         return { Coordinate<F>::half(x) * Coordinate<F>::from_ratio(1, block_size),
@@ -56,15 +56,15 @@ struct Rotation {
     RegularVoxelIndex to_regular_voxel_index(size_t block_size,
                                              const TransitionCellIndex& cell_index,
                                              size_t face_u, size_t face_v) const {
-        const auto x = uvw_base.x * static_cast<uint64_t >(block_size)
-            + u.x * static_cast<uint64_t >(cell_index.cell_u + face_u)
-            + v.x * static_cast<uint64_t >(cell_index.cell_v + face_v);
-        const auto y = uvw_base.y * static_cast<uint64_t >(block_size)
-            + u.y * static_cast<uint64_t >(cell_index.cell_u + face_u)
-            + v.y * static_cast<uint64_t >(cell_index.cell_v + face_v);
-        const auto z = uvw_base.z * static_cast<uint64_t >(block_size)
-            + u.z * static_cast<uint64_t >(cell_index.cell_u + face_u)
-            + v.z * static_cast<uint64_t >(cell_index.cell_v + face_v);
+        const auto x = uvw_base.x * static_cast<int64_t >(block_size)
+            + u.x * static_cast<int64_t >(cell_index.cell_u + face_u)
+            + v.x * static_cast<int64_t >(cell_index.cell_v + face_v);
+        const auto y = uvw_base.y * static_cast<int64_t >(block_size)
+            + u.y * static_cast<int64_t >(cell_index.cell_u + face_u)
+            + v.y * static_cast<int64_t >(cell_index.cell_v + face_v);
+        const auto z = uvw_base.z * static_cast<int64_t >(block_size)
+            + u.z * static_cast<int64_t >(cell_index.cell_u + face_u)
+            + v.z * static_cast<int64_t >(cell_index.cell_v + face_v);
 
         return { x, y, z };
     }
@@ -75,14 +75,14 @@ struct Rotation {
 
     Rotation(
         TransitionSide side,
-        std::tuple<uint64_t , uint64_t , uint64_t > uvw_base,
-        std::tuple<uint64_t , uint64_t , uint64_t > u,
-        std::tuple<uint64_t , uint64_t , uint64_t > v,
-        std::tuple<uint64_t , uint64_t , uint64_t > w,
-        std::tuple<uint64_t , uint64_t , uint64_t > /*xyz_base*/,
-        std::tuple<uint64_t , uint64_t , uint64_t > x,
-        std::tuple<uint64_t , uint64_t , uint64_t > y,
-        std::tuple<uint64_t , uint64_t , uint64_t > z
+        std::tuple<int64_t , int64_t , int64_t > uvw_base,
+        std::tuple<int64_t , int64_t , int64_t > u,
+        std::tuple<int64_t , int64_t , int64_t > v,
+        std::tuple<int64_t , int64_t , int64_t > w,
+        std::tuple<int64_t , int64_t , int64_t > /*xyz_base*/,
+        std::tuple<int64_t , int64_t , int64_t > x,
+        std::tuple<int64_t , int64_t , int64_t > y,
+        std::tuple<int64_t , int64_t , int64_t > z
     )
         : side{side},
         uvw_base{XYZ(uvw_base)},
