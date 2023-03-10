@@ -10,3 +10,13 @@ add_executable(${PROJECT_NAME} main.cpp transvoxel/transition_sides.cpp
                                         transvoxel/voxel_coordinates.cpp
                                         transvoxel/implementation/aux_tables.cpp 
                                         transvoxel/implementation/rotation.cpp)
+
+add_executable(sphere_10_3 sphere_10_3.cpp transvoxel/transition_sides.cpp 
+                                           transvoxel/voxel_coordinates.cpp
+                                           transvoxel/implementation/aux_tables.cpp 
+                                           transvoxel/implementation/rotation.cpp)
+
+add_executable(sphere_10_10 sphere_10_10.cpp transvoxel/transition_sides.cpp 
+                                             transvoxel/voxel_coordinates.cpp
+                                             transvoxel/implementation/aux_tables.cpp 
+                                             transvoxel/implementation/rotation.cpp)

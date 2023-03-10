@@ -20,7 +20,7 @@ const float THRESHOLD = 0.0f;
 int main() {
 
     // Extraction parameters: world zone and subdivisions
-    const int subdivisions = 3;
+    const int subdivisions = 10;
     const Block<float> block({0.0f, 0.0f, 0.0f}, 10.0f, subdivisions);
 
     // Extract from a VoxelSource
